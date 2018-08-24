@@ -18,9 +18,8 @@ public class rentalTest {
         Rental rental=new Rental(movie,4);
         customer.addRental(rental);
         String rentOrder=customer.statement();
-        int a=rentOrder.indexOf("is");
-        int b=rentOrder.indexOf("You");
-        String totalAmount=rentOrder.substring(a+2,a+5);
+        int indexOfis=rentOrder.indexOf("is<EM>");
+        String totalAmount=rentOrder.substring(indexOfis+6,indexOfis+9);
         assertThat(String.valueOf((double)3), is(totalAmount));
 
     }
@@ -32,9 +31,8 @@ public class rentalTest {
         Rental rental=new Rental(movie,3);
         customer.addRental(rental);
         String rentOrder=customer.statement();
-        int a=rentOrder.indexOf("is");
-        int b=rentOrder.indexOf("You");
-        String totalAmount=rentOrder.substring(a+2,a+5);
+        int indexOfis=rentOrder.indexOf("is<EM>");
+        String totalAmount=rentOrder.substring(indexOfis+6,indexOfis+9);
         assertThat(String.valueOf(1.5), is(totalAmount));
     }
 
@@ -48,12 +46,11 @@ public class rentalTest {
         customer.addRental(rental);
         customer.addRental(rental1);
         String rentOrder=customer.statement();
-        int a=rentOrder.indexOf("is");
-        int b=rentOrder.indexOf("You");
-        int c=rentOrder.indexOf("earned");
-        int d=rentOrder.indexOf(" frequent");
-        String totalAmount=rentOrder.substring(a+2,a+5);
-        String frequentRenterPoints=rentOrder.substring(c+6,d);
+        int indexOfis=rentOrder.indexOf("is<EM>");
+        int indexOfEarned=rentOrder.indexOf("earned<EM>");
+        int indexOfFrequent=rentOrder.indexOf(" </EM>frequent");
+        String totalAmount=rentOrder.substring(indexOfis+6,indexOfis+9);
+        String frequentRenterPoints=rentOrder.substring(indexOfEarned+10,indexOfFrequent);
         assertThat(String.valueOf((double) 5), is(totalAmount));
         assertThat(String.valueOf(2), is(frequentRenterPoints));
     }
