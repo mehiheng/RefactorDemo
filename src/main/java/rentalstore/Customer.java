@@ -24,8 +24,6 @@ public class Customer {
         Enumeration rentals = this.rentals.elements();
         String result = "<H1>Rental Record for <EM>" + getName() + "</EM></H1><P>\n";
         result += printBodyResult(rentals, result);
-
-        //add footer lines
         result += "<P>Amount owed is<EM>" + String.valueOf(totalAmount) + "</EM><P>\n";
         result += "You earned<EM>" + String.valueOf(frequentRenterPoints) + " </EM>frequent renter points";
         return result;
@@ -53,18 +51,17 @@ public class Customer {
                         }
                         break;
             }
-
-            //add frequent renter points
-            frequentRenterPoints ++;
-            //add bonus for a two day new release rental
-            if((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) && each.getDayRented() > 1){
-                frequentRenterPoints ++;
-            }
-
-            //show figures for this rental
+            frequentRenterPoints(each);
             result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(thisAmount) + "<BR>\n";
             totalAmount += thisAmount;
         }
         return result;
+    }
+
+    private void frequentRenterPoints(Rental each) {
+        frequentRenterPoints ++;
+        if((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) && each.getDayRented() > 1){
+            frequentRenterPoints ++;
+        }
     }
 }
