@@ -33,26 +33,42 @@ public class Customer {
         while(rentals.hasMoreElements()){
             double thisAmount =0;
             Rental each = (Rental) rentals.nextElement();
-            if(each.getMovie().getPriceCode()==Movie.REGULAR){
-                thisAmount += 2;
-                if(each.getDayRented() > 2){
-                    thisAmount+=(each.getDayRented() - 2) * 1.5;
-                }
-            }
-            if(each.getMovie().getPriceCode()==Movie.NEW_RELEASE){
-                thisAmount+=each.getDayRented()*3;
-            }
-            if(each.getMovie().getPriceCode()==Movie.CHILDRENS){
-                thisAmount+=1.5;
-                if(each.getDayRented() > 3){
-                    thisAmount += (each.getDayRented() -3)*1.5;
-                }
-            }
+            int getPriceCode=each.getMovie().getPriceCode();
+            thisAmount = REGULAR(thisAmount, each, getPriceCode);
+            thisAmount = NEW_RELEASE(thisAmount, each, getPriceCode);
+            thisAmount = CHILDRENS(thisAmount, each, getPriceCode);
             frequentRenterPoints(each);
             result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(thisAmount) + "<BR>\n";
             totalAmount += thisAmount;
         }
         return result;
+    }
+
+    private double CHILDRENS(double thisAmount, Rental each, int getPriceCode) {
+        if(getPriceCode==Movie.CHILDRENS){
+            thisAmount+=1.5;
+            if(each.getDayRented() > 3){
+                thisAmount += (each.getDayRented() -3)*1.5;
+            }
+        }
+        return thisAmount;
+    }
+
+    private double NEW_RELEASE(double thisAmount, Rental each, int getPriceCode) {
+        if(getPriceCode==Movie.NEW_RELEASE){
+            thisAmount+=each.getDayRented()*3;
+        }
+        return thisAmount;
+    }
+
+    private double REGULAR(double thisAmount, Rental each, int getPriceCode) {
+        if(getPriceCode==Movie.REGULAR){
+            thisAmount += 2;
+            if(each.getDayRented() > 2){
+                thisAmount+=(each.getDayRented() - 2) * 1.5;
+            }
+        }
+        return thisAmount;
     }
 
     private void frequentRenterPoints(Rental each) {
